@@ -60,7 +60,41 @@ Here's the html page that has xss-vulnerability.
 4. You've executed injection
 
 ## How to fix injection
-Use Prepared statement as in submitform method.
+Here's the vulnerable code
+```java
+@RequestMapping(value = "/search", method = RequestMethod.POST)
+public String searchResults(@RequestParam String name, Model model) {
+    List<Signup> signups = new ArrayList();
+    try {
+        Connection connection = DriverManager.getConnection(database, "", "");
+        Statement statement = connection.createStatement();
+        ResultSet result = statement.executeQuery("SELECT * FROM Signup WHERE name = '" + name + "'");
+        while (result.next()) {
+            String user = result.getString("name");
+            String address = result.getString("address");
+            signups.add(new Signup(user, address));
+        }
+        statement.close();
+        result.close();
+        connection.close();
+    } catch (Exception ex) {
+        // Ignore in silence #codingbad
+    }
+    model.addAttribute("signups", signups);
+    return "signups";
+}
+
+```
+
+Here's how to fix it
+```java          
+...  
+            Connection connection = DriverManager.getConnection(database, "", "");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Signup WHERE name = ?");
+            statement.setString(1, name);
+            ResultSet result = statement.executeQuery();
+...
+```
 
 ### Step by step to reproduce CSRF
 1. Run the application
