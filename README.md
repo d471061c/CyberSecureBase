@@ -14,8 +14,44 @@ Introduction:
 7. You've executed XSS-Attack
 
 ## How to fix XSS
-Go to "stats.html" and change utext to text. This fixes the issue because
-utext is deprecated and no longer in use.
+Here's the html page that has xss-vulnerability.
+```html
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title> Signups! </title>
+        <style>
+            table, th, td {
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <h1> Singups! </h1>
+        <table>
+            <tr>
+                <td> Name </td>
+                <td> Address </td>
+            </tr>
+            <tr th:each="signup: ${singups}">
+                <td th:utext="${signup.name}"> Name </td>
+                <td th:utext="${signup.address}"> Address </td>
+            </tr>
+        </table>
+    </body>
+</html>
+```
+
+> Here's how you fix the problem, simply change **utext** to **text**
+
+```html
+...
+                <td th:text="${signup.name}"> Name </td>
+                <td th:text="${signup.address}"> Address </td>
+...
+```
 
 ### Step by step to reproduce Injection
 1. Run the application
