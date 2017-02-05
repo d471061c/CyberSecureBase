@@ -2,7 +2,7 @@
 
 Introduction:
     There are five vulnerabilities in my project which are xss, sql-injection,
-    csrf, Broken Authentication and Session Management and Missing Function Level Access Control
+    csrf, Broken Authentication and Session Management and Data exposure
 
 ### Step by step to reproduce xss
 1. Run the application
