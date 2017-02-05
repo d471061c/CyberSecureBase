@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title> Signups! </title>
+        <style>
+            table, th, td {
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <h1> Signups! </h1>
+        <table>
+            <tr>
+                <td> Name </td>
+                <td> Address </td>
+            </tr>
+            <tr th:each="signup: ${signups}">
+                <td th:utext="${signup.name}"> Name </td>
+                <td th:utext="${signup.address}"> Address </td>
+            </tr>
+        </table>
+    </body>
+</html>
